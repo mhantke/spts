@@ -1,0 +1,12 @@
+build/
+*.pyc
+.ipynb_checkpoints
+*.png
+.fuse_*
+\#*
+.\#*
+.DS_Store
+dist/
+*.egg-info/
+*.so
+*~
