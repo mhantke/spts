@@ -71,7 +71,7 @@ setup(
     ext_modules=[
         Extension(
             "spts.denoise",
-            sources=["spts/denoise/denoise_module.c"],
+            sources=["spts/denoise_module.c"],
             include_dirs=[numpy.get_include()],
             ),
         Extension(
