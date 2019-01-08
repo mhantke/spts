@@ -214,7 +214,7 @@ def iterate_particle_motion(D, d_p, v_p_0=10., z_p_0= 0., z_p_max=1E-3, g=0.002,
     return z_p, v_p, a_p
 
 def zva(params, i_params, pressure, size, dt_min=1E-5, T0=293., z_max=20E-3, gas="He", v_0=None):
-    import msi.utils.fj as fj_c
+    import spts.utils.fj as fj_c
     return fj_c.iterate_particle_motion(p0=params[i_params["p0 factor"]]*(pressure*100),
                                         T0=T0,
                                         gas=gases.index(gas),

@@ -13,7 +13,7 @@ import numpy as np
 from matplotlib import pyplot as pypl
 
 
-from PyQt4 import QtCore, QtGui, uic
+from PyQt5 import QtCore, QtGui, uic
 import pyqtgraph as pg
 
 from expiringdict import ExpiringDict
@@ -23,7 +23,7 @@ import ui
 # MSI modules
 import worker
 
-from msi_conf import Conf
+from spts_conf import Conf
 from options import Options
 from view import View, ViewOptions
 from preferences import Preferences

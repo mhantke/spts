@@ -5,16 +5,16 @@ sys.path.insert(0, "%s/../" % this_dir)
 
 import copy
 
-# MSI modules
+# SPTS modules
 import config
 
 
-from PyQt4 import QtCore, QtGui, uic
+from PyQt5 import QtCore, QtGui, uic
 
 import logging
-logger = logging.getLogger("MSI_GUI")
+logger = logging.getLogger("SPTS_GUI")
 
-DEFAULT_MSI_CONF = this_dir + "/msi_default.conf"
+DEFAULT_SPTS_CONF = this_dir + "/spts_default.conf"
 
 class Conf(dict):
     def __init__(self, mainWindow, *args):
@@ -25,7 +25,7 @@ class Conf(dict):
         self._saved = None
         
     def open(self):
-        filename = QtGui.QFileDialog.getOpenFileName(self.w, "Open MSI configuration file", "", "CONF Files (*.conf)")
+        filename = QtGui.QFileDialog.getOpenFileName(self.w, "Open SPTS configuration file", "", "CONF Files (*.conf)")
         if isinstance(filename, tuple):
             if filename[0]:
                 filename = filename[0]
@@ -63,12 +63,12 @@ class Conf(dict):
                     return True
         return False        
         
-    def load_default(self, default_msi_conf=DEFAULT_MSI_CONF):
-        for sec_name, sec_dict in config.read_configfile(default_msi_conf).items():
+    def load_default(self, default_spts_conf=DEFAULT_SPTS_CONF):
+        for sec_name, sec_dict in config.read_configfile(default_spts_conf).items():
             self[sec_name] = sec_dict
 
     def save_as(self):
-        filename = QtGui.QFileDialog.getSaveFileName(self.w, "Save MSI configuration file", "", "CONF Files (*.conf)")
+        filename = QtGui.QFileDialog.getSaveFileName(self.w, "Save SPTS configuration file", "", "CONF Files (*.conf)")
         if(isinstance(filename, tuple)):
             if(filename[0]):
                 filename = filename[0]

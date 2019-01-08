@@ -11,10 +11,10 @@ import sys
 print sys.path
 
 import h5writer
-import msi
+import spts
 print "try"
-import msi.camera
-from msi.camera import CXDReader
+import spts.camera
+from spts.camera import CXDReader
 
 def cxd_to_h5(filename_cxd, filename_bg_cxd, filename_cxi, Nbg_max):
 

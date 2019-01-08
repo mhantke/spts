@@ -2,7 +2,7 @@ import numpy
 from scipy.misc import derivative
 
 import fj as fj_c
-import msi.utils.free_jet as fj_py
+import spts.utils.free_jet as fj_py
 
 d_p = 100E-9
 z = 2E-3

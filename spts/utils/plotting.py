@@ -16,11 +16,11 @@ def get_run(timestamp=None):
         D["root"] = "."
         D["timestamp"] = os.path.abspath(D["root"]).split("/")[-1][:-len("_analysis")]
     else:
-        D["root"] = "/scratch/fhgfs/hantke/msi/%s/%s_analysis" % (timestamp.split("_")[0],timestamp)
+        D["root"] = "/scratch/fhgfs/hantke/spts/%s/%s_analysis" % (timestamp.split("_")[0],timestamp)
         D["timestamp"] = timestamp
-    D["data_filename"] = "%s/msi.cxi" % D["root"]
-    D["conf_filename"] = "/home/hantke/src/msi/detect_particles/msi.conf"
-    #D["conf_filename"] = "%s/msi.conf" % D["root"]
+    D["data_filename"] = "%s/spts.cxi" % D["root"]
+    D["conf_filename"] = "/home/hantke/src/spts/detect_particles/spts.conf"
+    #D["conf_filename"] = "%s/spts.conf" % D["root"]
     if not os.path.exists(D["conf_filename"]):
         print "ERROR: Cannot find configuration file \"%s\"." % D["conf_filename"]
         return

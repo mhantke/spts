@@ -1,6 +1,6 @@
 import numpy as np
 
-from PyQt4 import QtCore, QtGui, uic
+from PyQt5 import QtCore, QtGui, uic
 
 import ui
 
@@ -12,8 +12,7 @@ class Preferences:
 
         if not self.w.settings.contains("dataMountPrefix"):
             self.w.settings.setValue("dataMountPrefix", "")
-        self.data_mount_prefix = str(self.w.settings.value("dataMountPrefix").toString())
-        
+        self.data_mount_prefix = str(self.w.settings.value("dataMountPrefix"))
         
     def open_preferences_dialog(self):
         diag = PreferencesDialog(self.w)

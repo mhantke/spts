@@ -21,13 +21,13 @@ files = os.listdir(".")
 # Check argument
 if mode == "single":
     ntasks = 1
-    cmd = "run_msi.py"
+    cmd = "run_spts.py"
 elif mode == "mulpro":
     ntasks = 12
-    cmd = ("run_msi.py -c %i" % ntasks)    
+    cmd = ("run_spts.py -c %i" % ntasks)    
 elif mode == "mpi":
     ntasks = 12
-    cmd = "mpirun run_msi.py -m"
+    cmd = "mpirun run_spts.py -m"
 else:
     print "ERROR: The selected mode argument (%s) is invalid. It must be either single, mulpro, or mpi." % mode
     sys.exit(1)
@@ -37,9 +37,9 @@ if args.debug:
 elif args.verbose:
     cmd += " -v"
 
-# Check whether msi.conf exists
-if "msi.conf" not in files:
-    print "ERROR: msi.conf must exist in current directory."
+# Check whether spts.conf exists
+if "spts.conf" not in files:
+    print "ERROR: spts.conf must exist in current directory."
     sys.exit(1)
 
 # Check whether at least one CXI file exists
@@ -48,14 +48,14 @@ if len(cxi_filenames) == 0:
     print "WARNING: At least one CXI file must exist in current directory. Otherwise there is nothing to do."
     sys.exit(1)
 
-# Replace line with filename for making msi.conf universal
-with open("%s/msi.conf" % curdir, "r") as f:
-    msi_conf_lines = []
+# Replace line with filename for making spts.conf universal
+with open("%s/spts.conf" % curdir, "r") as f:
+    spts_conf_lines = []
     for line in f.readlines():
         if line.startswith("filename"):
-            msi_conf_lines.append("filename = ./frames.cxi\n")
+            spts_conf_lines.append("filename = ./frames.cxi\n")
         else:
-            msi_conf_lines.append(line)
+            spts_conf_lines.append(line)
 
 for fn in cxi_filenames:
     n = fn[:-4]    
@@ -71,14 +71,14 @@ for fn in cxi_filenames:
     # Write link to data file
     os.system("ln -sf ../%s %s/frames.cxi\n" % (fn, d))
         
-    # Write universal msi.conf
-    with open("%s/msi.conf" % d, "w") as f:
-        f.writelines(msi_conf_lines)
+    # Write universal spts.conf
+    with open("%s/spts.conf" % d, "w") as f:
+        f.writelines(spts_conf_lines)
         
     # Write bash submission script
     lines = ["#!/bin/bash\n",
-             "sbatch --output=msi.out --job-name=msi ./msi.sh\n"]
-    sc_sub = ("%s/submit_msi" % d)
+             "sbatch --output=spts.out --job-name=spts ./spts.sh\n"]
+    sc_sub = ("%s/submit_spts" % d)
     with open(sc_sub, "w") as f:
         f.writelines(lines)
         
@@ -90,12 +90,12 @@ for fn in cxi_filenames:
              "#SBATCH --partition=fast\n",
              "#SBATCH --exclude=c018\n"
              "%s\n" % cmd]
-    sc_slu = ("%s/msi.sh" % d)
+    sc_slu = ("%s/spts.sh" % d)
     with open(sc_slu, "w") as f:
         f.writelines(lines)  
 
     # Make submission script executable
     os.system("chmod ug+x %s" % sc_sub)
     # Go into output directory and fire up submission script 
-    os.system("cd %s; ./submit_msi" % (d))
+    os.system("cd %s; ./submit_spts" % (d))
 

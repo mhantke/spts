@@ -28,7 +28,7 @@ for i,p_file in enumerate(p_files):
     	  D[k][i] = D_i[k]
 
 
-with open("params_msi.csv", "w") as f:
+with open("params_spts.csv", "w") as f:
      l = ""
      for k in keys:
           l += k + "\t"

@@ -1,6 +1,6 @@
 import numpy as np
 
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 import pyqtgraph as pg
 
 class ViewOptions:
@@ -15,9 +15,9 @@ class ViewOptions:
         if(not self.w.settings.contains("viewOptionsAutoRange")):
             self.w.settings.setValue("viewOptionsAutoRange", True)
 
-        self.vmin = self.w.settings.value("viewOptionsVMin").toFloat()[0]
-        self.vmax = self.w.settings.value("viewOptionsVMax").toFloat()[0]
-        self.auto_range = self.w.settings.value("viewOptionsAutoRange").toBool()   
+        self.vmin = float(self.w.settings.value("viewOptionsVMin"))
+        self.vmax = float(self.w.settings.value("viewOptionsVMax"))
+        self.auto_range = bool(self.w.settings.value("viewOptionsAutoRange"))   
         
         self.vMinDoubleSpinBox = self.w.ui.vMinDoubleSpinBox
         self.vMaxDoubleSpinBox = self.w.ui.vMaxDoubleSpinBox

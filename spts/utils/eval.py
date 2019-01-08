@@ -10,7 +10,7 @@ import requests
 from distutils.version import LooseVersion
 
 import logging
-logger = logging.getLogger('msi')
+logger = logging.getLogger('spts')
 
 from matplotlib import pyplot as pypl
 from matplotlib.patches import Circle
@@ -19,9 +19,9 @@ from matplotlib.colors import LogNorm
 import seaborn as sns
 sns.set_style("white")
 
-import msi
+import spts
 
-from msi import config
+from spts import config
 
 adu_per_photon = {"Hamamatsu-C11440-22CU": 2.13}
 
@@ -290,7 +290,7 @@ def estimate_type(var):
             raise NameError('Something messed up autocasting var %s (%s)' % (var, type(var)))
 
 
-def read_data(D, root_dir="/scratch/fhgfs/hantke/msi", only_scalars=False, skip_thumbnails=True, verbose=True, data_prefix="", iddate=False):
+def read_data(D, root_dir="/scratch/fhgfs/hantke/spts", only_scalars=False, skip_thumbnails=True, verbose=True, data_prefix="", iddate=False):
     ds_names = D.keys()
     ds_names.sort()
     for ds_name in ds_names:
@@ -298,7 +298,7 @@ def read_data(D, root_dir="/scratch/fhgfs/hantke/msi", only_scalars=False, skip_
                                       skip_thumbnails=skip_thumbnails, verbose=verbose, data_prefix=data_prefix, iddate=iddate)
     return D
 
-def read_data_single(ds_name, D, root_dir="/scratch/fhgfs/hantke/msi", only_scalars=False, skip_thumbnails=True, verbose=True, data_prefix="", iddate=False):
+def read_data_single(ds_name, D, root_dir="/scratch/fhgfs/hantke/spts", only_scalars=False, skip_thumbnails=True, verbose=True, data_prefix="", iddate=False):
     if iddate:
         fn_root = ds_name.split("_")[0]
     else:
@@ -308,8 +308,8 @@ def read_data_single(ds_name, D, root_dir="/scratch/fhgfs/hantke/msi", only_scal
     else:
         folder = "%s%s/%s_analysis" % (data_prefix, D["Data Location"], fn_root)
 
-    D["filename"] = "%s/msi.cxi" % folder
-    D["conf_filename"] = "%s/msi.conf" % folder 
+    D["filename"] = "%s/spts.cxi" % folder
+    D["conf_filename"] = "%s/spts.conf" % folder 
         
     if not os.path.isfile(D["filename"]):
         if verbose:
@@ -438,11 +438,11 @@ def mask_data(D, exclude_saturated_frames=False, verbose=True):
             print "%s: %.1f part. rate\t %i part.\t (%i %% not sat.; %i %% centered; %i %% circ.; %i %% isol.)" % (k, round(n_frame.mean(),1), v.sum(), 100.*n_fract, 100.*c_fract, 100.*r_fract, 100.*i_fract)
     return D
 
-def read_thumbnails(D, k, index_mask, root_dir="/scratch/fhgfs/hantke/msi", Nmax=None):
+def read_thumbnails(D, k, index_mask, root_dir="/scratch/fhgfs/hantke/spts", Nmax=None):
     if "Data Location" not in D[k].keys(): 
-        D[k]["filename"] = "%s/%s/%s_analysis/msi.cxi" % (root_dir,D[k]["Date"],k)           
+        D[k]["filename"] = "%s/%s/%s_analysis/spts.cxi" % (root_dir,D[k]["Date"],k)           
     else:
-        D[k]["filename"] = "%s/%s_analysis/msi.cxi" % (D[k]["Data Location"],k)           
+        D[k]["filename"] = "%s/%s_analysis/spts.cxi" % (D[k]["Data Location"],k)           
     with h5py.File(D[k]["filename"], "r") as f:
         ni = index_mask.shape[0]
         nj = index_mask.shape[1]

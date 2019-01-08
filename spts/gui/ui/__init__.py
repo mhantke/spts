@@ -1,4 +1,4 @@
-from PyQt4 import uic
+from PyQt5 import uic
 import os
 
 uidir = os.path.dirname(os.path.realpath(__file__))
