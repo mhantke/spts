@@ -2,7 +2,6 @@
 import argparse
 import os,sys
 import OleFileIO_PL
-import matplotlib.pyplot as plt
 from struct import unpack
 import numpy as np
 from scipy.misc import imsave
