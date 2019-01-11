@@ -4,7 +4,6 @@ import os,sys
 import OleFileIO_PL
 from struct import unpack
 import numpy as np
-from scipy.misc import imsave
 
 import sys
 print sys.path
