@@ -40,8 +40,8 @@ class MainWindow(ui.MainUI, ui.MainBaseUI):
         self.ui = ui.MainUI()
         self.ui.setupUi(self)
 
-        self.settings = QtCore.QSettings()
-        
+        self.settings = QtCore.QSettings(QtCore.QSettings.IniFormat, QtCore.QSettings.UserScope, "fxihub", "spts")
+
         self.preferences = Preferences(self)
             
         self.view = View(self)
