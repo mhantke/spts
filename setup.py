@@ -7,7 +7,7 @@
 
 import sys, os
 this_dir = os.path.dirname(os.path.realpath(__file__))
-print this_dir
+print(this_dir)
 sys.path.append(this_dir + "/spts/data")
 #from distutils.core import setup, Extension
 from setuptools import setup, Extension, find_packages
