@@ -13,7 +13,7 @@ sys.path.append(this_dir + "/spts/data")
 from setuptools import setup, Extension, find_packages
 
 import numpy
-
+os.environ['MACOSX_DEPLOYMENT_TARGET'] = '10.9'
 setup(    
     name='spts',
     version='0.0.2',
