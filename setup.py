@@ -13,11 +13,7 @@ sys.path.append(this_dir + "/spts/data")
 from setuptools import setup, Extension, find_packages
 
 import numpy
-<<<<<<< Updated upstream
-os.environ['MACOSX_DEPLOYMENT_TARGET'] = '10.9' 
-=======
 os.environ['MACOSX_DEPLOYMENT_TARGET'] = '10.9'
->>>>>>> Stashed changes
 setup(    
     name='spts',
     version='0.0.2',
