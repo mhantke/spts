@@ -77,7 +77,6 @@ def cxd_to_h5(filename_cxd, filename_bg_cxd, filename_cxi, Nbg_max):
         # Write to disc
         W.write_slice(out)
             
-            
         if integrated_raw is None:
             integrated_raw = np.zeros(shape=frame.shape, dtype='float64')
         if integratedsq_raw is None:
@@ -116,32 +115,38 @@ def cxd_to_h5(filename_cxd, filename_bg_cxd, filename_cxi, Nbg_max):
     print "Clean exit."
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Conversion of CXD (Hamamatsu file format) to HDF5')
-    parser.add_argument('filename', type=str, help='CXD filename')
-    parser.add_argument('-b','--background-filename', type=str, help='CXD filename with photon background data')
-    parser.add_argument('-o','--out-filename', type=str, help='destination file')
-    parser.add_argument('-s','--bg-subtraction', type=int, help='carry out background subtraction (is set to \'0\' by default)', default=0)
-    parser.add_argument('-n','--bg-frames-max', type=int, help='maximum number of frames that shall be used for background calculation', default=250)
+
+    ### If there is an uppercase "-" in an optional argument it is converted internally to a "_", so we acccess these arguments in code with a "_" as well!!! 
+    parser = argparse.ArgumentParser(description='Conversion of CXD (Hamamatsu file format) to HDF5') # positional argument
+    parser.add_argument('filename', type=str, help='CXD filename') # optional argument
+    parser.add_argument('-b','--background-filename', type=str, help='CXD filename with photon background data') # optional argument
+    parser.add_argument('-o','--out-filename', type=str, help='destination file') # optional argument
+    parser.add_argument('-n','--bg-frames-max', type=int, help='maximum number of frames that will be used for background calculation', default=250) # optional argument
     
     args = parser.parse_args()
 
     f = args.filename
 
-    if args.bg_subtraction == 0:
-        f_bg = None
-    elif args.background_filename:
+    ### If background file is supplied, do background subtraction - if not supplied, proceed as usual!!!
+    BackgroundFileExists = bool(args.background_filename)
+    if BackgroundFileExists == False: 
+        f_bg = None 
+    elif BackgroundFileExists == True:
         f_bg = args.background_filename
-    else:
+    else: 
         f_bg = f[:-4] + "_bg.cxd"
         if not os.path.isfile(f_bg):
             print "WARNING: File with background frames not found in location %s.\n\tFalling back to determining background from the real data frames." % f_bg
             f_bg = f
 
+    ### If the output file name is not specified the original file name is used and .cxi is appended to it!!!
     if args.out_filename:
         f_out = args.out_filename
     else:
         f_out = f[:-4] + ".cxi"
             
+    ### Checks whether given input file is in the correct .cxd format!!!
+    ### Call cxd_to_h5(); with f = filename_cxd, f_bg = filename_bg_cxd, f_out = filename_cxi, and arg.bg_frames_max = Nbg_max!!!
     if not args.filename.endswith(".cxd"):
         print "ERROR: Given filename %s does not end with \".cxd\. Wrong format!" % args.filename
     else:
