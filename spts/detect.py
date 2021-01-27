@@ -17,7 +17,7 @@ def find_particles(image_scored, image_thresholded, min_dist, n_particles_max, p
     success = False
     return_default = success, [], None, None, None, None, None, None, None, None
         
-    if n_lit == 0:
+    if  n_lit == 0:
         return return_default
 
     else:
@@ -34,7 +34,7 @@ def find_particles(image_scored, image_thresholded, min_dist, n_particles_max, p
         nx = image_thresholded.shape[1]
         ny = image_thresholded.shape[0]
         x,y = np.meshgrid(np.arange(nx), np.arange(ny))
-        x = x[image_thresholded]
+        x = x[image_thresholded]    
         y = y[image_thresholded]
         l = labels[image_thresholded]
         v = image_scored[image_thresholded]

@@ -110,6 +110,12 @@ class Worker:
         O = OutputCollector()
         # Read raw data
         image_raw, saturation_mask = self._load_data(i, self.conf["raw"]["dataset_name"], self.conf["raw"]["subtract_constant"], self.conf["raw"].get("cmcx", False), self.conf["raw"].get("cmcy", False), saturation_level=self.conf["raw"]["saturation_level"])
+        
+        ###### Thresholding
+        #image_raw[image_raw < 0] = 0
+        #image_raw[image_raw == 0.] = 0.
+        ###### Thresholding
+
         O.add("image_raw", image_raw, 5, pipeline=True)
         O.add("saturation_mask", saturation_mask, 5, pipeline=True)
         # Measurement succeeded if all pixel values are below saturation level
@@ -130,6 +136,12 @@ class Worker:
             sel = image<self.conf["process"]["floor_cut_level"]
             if sel.sum() > 0:
                 image[sel] = 0
+        
+        ###### Thresholding
+        #image[image < 0] = 0
+        #image[image == 0.] = 0.
+        ###### Thresholding
+
         O.add("image", image, 2, pipeline=True)
         success = True
         O.add("success", success, 0, pipeline=True)        
@@ -141,6 +153,12 @@ class Worker:
         i = work_package["i"]
         O = OutputCollector()
         image = tmp_package["2_process"]["image"]
+
+        ###### Thresholding
+        #image[image < 0] = 0
+        #image[image == 0.] = 0.
+        ###### Thresholding
+
         # Denoise
         log_debug(logger, "(%i/%i) Denoise image" % (i+1, self.N_arr))
         self._update_denoiser()
@@ -155,7 +173,14 @@ class Worker:
     def _work_threshold(self, work_package, tmp_package, out_package):
         i = work_package["i"]
         O = OutputCollector()
+
         image_denoised = tmp_package["3_denoise"]["image_denoised"]
+
+        ###### Thresholding
+        #image_denoised[image_denoised < 0] = 0
+        #image_denoised[image_denoised == 0.] = 0.
+        ###### Thresholding
+
         image_thresholded = spts.threshold.threshold(image_denoised, self.conf["threshold"]["threshold"], fill_holes=self.conf["threshold"].get("fill_holes", False))
         O.add("image_thresholded", np.asarray(image_thresholded, dtype=np.bool), 3, pipeline=True)
         thresholded_n_pixels = image_thresholded.sum()
@@ -171,6 +196,14 @@ class Worker:
         O = OutputCollector()
         image_denoised = tmp_package["3_denoise"]["image_denoised"]
         image_thresholded = tmp_package["4_threshold"]["image_thresholded"]
+
+        ###### Thresholding
+        #image_denoised[image_denoised < 0] = 0
+        #image_denoised[image_denoised == 0.] = 0.
+        #image_thresholded[image_thresholded < 0] = 0
+        #image_thresholded[image_thresholded == 0.] = 0.
+        ###### Thresholding
+
         # Detect particles
         log_debug(logger, "(%i/%i) Detect particles" % (i+1, self.N_arr))
         n_max = self.conf["detect"]["n_particles_max"]

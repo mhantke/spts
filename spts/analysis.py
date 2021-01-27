@@ -13,6 +13,12 @@ THUMBNAILS_WINDOW_SIZE_DEFAULT = 30
 
 def analyse_particles(image, image_raw, saturation_mask, i_labels, labels, x, y, merged, n_particles_max, full_output, **conf_analysis):
 
+    ########## Test manual treshold
+    #image[image < 0] = 0
+
+    image_raw[image_raw < 0] = 0 
+    ########## Test manual treshold
+
     if full_output:            
         masked_image = np.zeros_like(image_raw)
         if conf_analysis["integration_mode"] == "windows":
@@ -20,45 +26,45 @@ def analyse_particles(image, image_raw, saturation_mask, i_labels, labels, x, y,
         else:
             thumbnails = np.zeros(shape=(n_particles_max, THUMBNAILS_WINDOW_SIZE_DEFAULT, THUMBNAILS_WINDOW_SIZE_DEFAULT), dtype=image.dtype) 
     else:
-        masked_image = None
-        thumbnails = None
-    mask = None
+        masked_image = None 
+        thumbnails = None 
+    mask = None 
 
-    N = len(i_labels)
+    N = len(i_labels) 
 
-    psuccess = np.zeros(N, dtype='bool')
-    psum  = np.zeros(N) - 1
-    pmin  = np.zeros(N) - 1
-    pmax  = np.zeros(N) - 1
-    pmean  = np.zeros(N) - 1
-    pmedian  = np.zeros(N) - 1
+    psuccess = np.zeros(N, dtype='bool') 
+    psum  = np.zeros(N) - 1 
+    pmin  = np.zeros(N) - 1 
+    pmax  = np.zeros(N) - 1 
+    pmean  = np.zeros(N) - 1 
+    pmedian  = np.zeros(N) - 1 
 
-    psat  = np.zeros(N) - 1
+    psat  = np.zeros(N) - 1 
     
-    psize = np.zeros(N) - 1    
-    pecc  = np.zeros(N) - 1
-    pcir  = np.zeros(N) - 1
+    psize = np.zeros(N) - 1 
+    pecc  = np.zeros(N) - 1 
+    pcir  = np.zeros(N) - 1 
     
-    for i, i_label, x_i, y_i, m in zip(range(N), i_labels, x, y, merged):
+    for i, i_label, x_i, y_i, m in zip(range(N), i_labels, x, y, merged): 
 
-        if x_i < 0 or y_i < 0:
-            continue
+        if x_i < 0 or y_i < 0: 
+            continue 
         
         # Analyse
-        pixels = i_label == labels
-        psat[i]  = (pixels * saturation_mask).any()
-        psize[i] = pixels.sum()
-        pecc[i] = measure_eccentricity(intensity=image*pixels, mask=pixels)
-        pcir[i] = measure_circumference(pixels)
+        pixels = i_label == labels 
+        psat[i]  = (pixels * saturation_mask).any() 
+        psize[i] = pixels.sum() 
+        pecc[i] = measure_eccentricity(intensity=image*pixels, mask=pixels) 
+        pcir[i] = measure_circumference(pixels) 
         
-        if conf_analysis["integration_mode"] == "windows":
-            values = get_values_window(image_raw, int(round(x_i)), int(round(y_i)), window_size=conf_analysis["window_size"], circle_window=conf_analysis["circle_window"], i=i,
-                                       masked_image=masked_image, thumbnails=thumbnails)
-        elif conf_analysis["integration_mode"] == "labels":
-            values = get_values_label(image_raw, labels, i_label,
-                                      masked_image=masked_image, thumbnails=thumbnails)
+        if conf_analysis["integration_mode"] == "windows": 
+            values = get_values_window(image_raw, int(round(x_i)), int(round(y_i)), window_size=conf_analysis["window_size"], circle_window=conf_analysis["circle_window"], i=i, 
+                                       masked_image=masked_image, thumbnails=thumbnails) 
+        elif conf_analysis["integration_mode"] == "labels": 
+            values = get_values_label(image_raw, labels, i_label, 
+                                      masked_image=masked_image, thumbnails=thumbnails) 
         else:
-            log_and_raise_error(logger, "%s is not a valid integration_mode!" % conf_analysis["integration_mode"])
+            log_and_raise_error(logger, "%s is not a valid integration_mode!" % conf_analysis["integration_mode"]) 
 
         if values is not None and len(values) > 0:
             psuccess[i] = True

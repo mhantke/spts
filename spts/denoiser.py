@@ -25,9 +25,9 @@ class DenoiserGauss:
         image_G = np.fft.ifft2(np.fft.ifftshift(fimage_G))
         return image_G.real
 
-class DenoiserGauss2:
+class DenoiserGauss2: 
 
-    def __init__(self, sigma):
+    def __init__(self, sigma): 
         self.sigma1 = sigma*2
         self.sigma2 = sigma
         self._G1 = None
@@ -61,7 +61,7 @@ class DenoiserGauss2:
         #print out.max(), out.min()
         #out = out/out.max() * 65000.
         return out
-    
+
 class DenoiserHistogram:
 
     def __init__(self, window_size, images_bg, vmin, vmax, dx=1, vmin_full=-50, vmax_full=255):
