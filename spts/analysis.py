@@ -16,7 +16,7 @@ def analyse_particles(image, image_raw, saturation_mask, i_labels, labels, x, y,
     ########## Test manual treshold
     #image[image < 0] = 0
 
-    image_raw[image_raw < 0] = 0 
+    #image_raw[image_raw < 0] = 0 
     ########## Test manual treshold
 
     if full_output:            
