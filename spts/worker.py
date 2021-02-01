@@ -317,10 +317,10 @@ class Worker:
             med = np.median(image, axis=0)
             med_image = np.repeat(np.asarray([med]), image.shape[0], axis=0).reshape(image.shape[0], image.shape[1])
             image -= np.asarray(med_image, dtype=image.dtype)
-        return image, saturation_mask
+        return image, saturation_mask 
 
-    def _get_full_filename(self):
-        if len(self.data_mount_prefix) == 0:
+    def _get_full_filename(self): 
+        if len(self.data_mount_prefix) == 0: 
             fn = self.conf["general"]["filename"]
         else:
             fn = "%s/%s" % (self.data_mount_prefix, self.conf["general"]["filename"])

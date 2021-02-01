@@ -39,16 +39,16 @@ class DenoiserGauss2:
         image_f64 = np.asarray(image, dtype=np.float64)
         Nx = image.shape[1]
         Ny = image.shape[0]
-        if self._G1 is None or self._G1_sigma != self.sigma1:
+        if self._G1 is None or self._G1_sigma != self.sigma1 or self._G1.shape != image.shape:
             X,Y = np.meshgrid(np.arange(Nx), np.arange(Ny))
             X = np.float64(X - Nx/2) / Nx
             Y = np.float64(Y - Ny/2) / Ny
             Rsq = X**2 + Y**2
             self._G1 = np.exp(-Rsq/2./(self.sigma1+np.finfo(np.float64).eps)**2)
             self._G1_sigma = self.sigma1
-        if self._G2 is None or self._G2_sigma != self.sigma2:
+        if self._G2 is None or self._G2_sigma != self.sigma2 or self._G2.shape != image.shape:
             X,Y = np.meshgrid(np.arange(Nx), np.arange(Ny))
-            X = np.float64(X - Nx/2) / Nx
+            X = np.float64(X - Nx/2) / Nx 
             Y = np.float64(Y - Ny/2) / Ny
             Rsq = X**2 + Y**2
             self._G2 = np.exp(-Rsq/2./(self.sigma2+np.finfo(np.float64).eps)**2)
