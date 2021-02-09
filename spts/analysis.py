@@ -13,18 +13,12 @@ THUMBNAILS_WINDOW_SIZE_DEFAULT = 30
 
 def analyse_particles(image, image_raw, saturation_mask, i_labels, labels, x, y, merged, n_particles_max, full_output, **conf_analysis):
 
-    ########## Test manual treshold
-    #image[image < 0] = 0
-
-    #image_raw[image_raw < 0] = 0 
-    ########## Test manual treshold
-
     if full_output:            
         masked_image = np.zeros_like(image_raw)
         if conf_analysis["integration_mode"] == "windows":
-            thumbnails = np.zeros(shape=(n_particles_max, conf_analysis["window_size"], conf_analysis["window_size"]), dtype=image.dtype) 
+            thumbnails = np.zeros(shape=(n_particles_max, conf_analysis["window_size"], conf_analysis["window_size"]), dtype = image.dtype) 
         else:
-            thumbnails = np.zeros(shape=(n_particles_max, THUMBNAILS_WINDOW_SIZE_DEFAULT, THUMBNAILS_WINDOW_SIZE_DEFAULT), dtype=image.dtype) 
+            thumbnails = np.zeros(shape=(n_particles_max, THUMBNAILS_WINDOW_SIZE_DEFAULT, THUMBNAILS_WINDOW_SIZE_DEFAULT), dtype = image.dtype) 
     else:
         masked_image = None 
         thumbnails = None 
@@ -32,7 +26,7 @@ def analyse_particles(image, image_raw, saturation_mask, i_labels, labels, x, y,
 
     N = len(i_labels) 
 
-    psuccess = np.zeros(N, dtype='bool') 
+    psuccess = np.zeros(N, dtype = 'bool') 
     psum  = np.zeros(N) - 1 
     pmin  = np.zeros(N) - 1 
     pmax  = np.zeros(N) - 1 
@@ -60,7 +54,7 @@ def analyse_particles(image, image_raw, saturation_mask, i_labels, labels, x, y,
         if conf_analysis["integration_mode"] == "windows": 
             values = get_values_window(image_raw, int(round(x_i)), int(round(y_i)), window_size=conf_analysis["window_size"], circle_window=conf_analysis["circle_window"], i=i, 
                                        masked_image=masked_image, thumbnails=thumbnails) 
-        elif conf_analysis["integration_mode"] == "labels": 
+        elif conf_analysis["integration_mode"] == "labels":    
             values = get_values_label(image_raw, labels, i_label, 
                                       masked_image=masked_image, thumbnails=thumbnails) 
         else:
