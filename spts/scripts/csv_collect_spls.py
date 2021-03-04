@@ -7,8 +7,6 @@ p_files.sort()
 
 D = {}
 
-#print len(p_files)
-
 for i,p_file in enumerate(p_files):
      D_i = pickle.load(open(p_file, "r"))
      

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/local/bin/python3
 
 #--------------------------------------------------------------------------
 # SPTS - Single Particle Tracking and Sizing
@@ -7,13 +7,11 @@
 
 import sys, os
 this_dir = os.path.dirname(os.path.realpath(__file__))
-print(this_dir)
 sys.path.append(this_dir + "/spts/data")
-#from distutils.core import setup, Extension
+
 from setuptools import setup, Extension, find_packages
 
 import numpy
-os.environ['MACOSX_DEPLOYMENT_TARGET'] = '10.9'
 setup(    
     name='spts',
     version='0.0.2',
@@ -39,16 +37,11 @@ setup(
         # Pick your license as you wish (should match "license" above)
         'License :: OSI Approved :: BSD License',
 
-        
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
-        #'Programming Language :: Python :: 3',
-        #'Programming Language :: Python :: 3.2',
-        #'Programming Language :: Python :: 3.3',
-        #'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ],
 
     keywords='mie scattering single particle',
@@ -61,7 +54,6 @@ setup(
             'gui/spts_default.conf'
         ]
     },
-
 
     install_requires=['numpy', 'scipy', 'h5py', 'h5writer', 'mulpro>=0.1.3'],
 
@@ -81,5 +73,5 @@ setup(
             ),
         ],
     
-    scripts=[this_dir+"/spts/scripts/"+s for s in os.listdir(this_dir+"/spts/scripts/") if ((s.endswith(".py") or s.endswith(".sh")) and not (s.startswith(".")))],
+    scripts = [this_dir+"/spts/scripts/"+s for s in os.listdir(this_dir+"/spts/scripts/") if ((s.endswith(".py") or s.endswith(".sh")) and not (s.startswith(".")))],
 )

@@ -19,6 +19,6 @@ for f in filenames:
 
     cmds = ["cp ./spts.conf %s/" % (d), "ln -s ../%s %s/frames.cxi" % (f,d), "cd %s; run_spts.py -c 9 -v; cd .." % (d)]
     for cmd in cmds:
-        print cmd 
+        print(cmd) 
         os.system(cmd)
     

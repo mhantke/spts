@@ -29,7 +29,7 @@ elif mode == "mpi":
     ntasks = 12
     cmd = "mpirun run_spts.py -m"
 else:
-    print "ERROR: The selected mode argument (%s) is invalid. It must be either single, mulpro, or mpi." % mode
+    print("ERROR: The selected mode argument (%s) is invalid. It must be either single, mulpro, or mpi." % mode)
     sys.exit(1)
 
 if args.debug:
@@ -39,13 +39,13 @@ elif args.verbose:
 
 # Check whether spts.conf exists
 if "spts.conf" not in files:
-    print "ERROR: spts.conf must exist in current directory."
+    print("ERROR: spts.conf must exist in current directory.")
     sys.exit(1)
 
 # Check whether at least one CXI file exists
 cxi_filenames = [f for f in files if f.endswith(".cxi")]
 if len(cxi_filenames) == 0:
-    print "WARNING: At least one CXI file must exist in current directory. Otherwise there is nothing to do."
+    print("WARNING: At least one CXI file must exist in current directory. Otherwise there is nothing to do.")
     sys.exit(1)
 
 # Replace line with filename for making spts.conf universal
@@ -63,7 +63,7 @@ for fn in cxi_filenames:
     # Create output directory if it does not exist
     d = "./"+n+"_analysis"
     if os.path.exists(d):
-        print "WARNING: Directory %s for output already exists." % d
+        print("WARNING: Directory %s for output already exists." % d)
         #shutil.rmtree(d)
     else:
         os.mkdir(d)

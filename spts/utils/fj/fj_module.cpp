@@ -355,11 +355,21 @@ static PyMethodDef FjMethods[] = {
   {NULL, NULL, 0, NULL}
 };
 
+ static struct PyModuleDef fjmodule = {
+        PyModuleDef_HEAD_INIT,
+        "fj",           
+        "Particle motion in a free jet - expanding gas passing through a nozzle into a low pressure chamber..", 
+        -1,                   
+        FjMethods,       
+        NULL,                
+        NULL,              
+        NULL,                   
+        NULL,                   
+  };
 
-PyMODINIT_FUNC initfj(void)
+PyMODINIT_FUNC PyInit_initfj(void)
 {
   import_array();
-  PyObject *m = Py_InitModule3("fj", FjMethods, "Particle motion in a free jet - expanding gas passing through a nozzle into a low pressure chamber.");
-  if (m == NULL)
-    return;
+  return PyModule_Create(&fjmodule);
+
 }

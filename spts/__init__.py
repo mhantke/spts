@@ -1,5 +1,3 @@
-
-
 def _init():
     import logging, sys
 

@@ -147,9 +147,6 @@ static PyObject *denoise(PyObject *self, PyObject *args, PyObject *kwargs)
   int full_hist_len = (vmax_full - vmin_full + dx) / dx;
   int hist_len = (vmax - vmin + dx) / dx;
 
-  //printf("full_hist_len = %d\n", full_hist_len);
-  //printf("hist_len = %d\n", hist_len);
-  
   // Build window pixel histograms from image
   int * hists_image = (int *) calloc(N_pix*full_hist_len, sizeof(int));
   for (j = 0; j < N_pix; j++) {
@@ -163,8 +160,6 @@ static PyObject *denoise(PyObject *self, PyObject *args, PyObject *kwargs)
 	  v = image[i];
 	  k = (v - vmin_full) / dx;
 	  if ((v >= vmin_full) && (v <= vmax_full)) {
-	    //printf("j = %d (%d) ; v = %d ; k = %d (%d)\n", j, N_pix, v, k, full_hist_len);
-	    //printf("index = %d (%d)\n", j*full_hist_len+k, N_pix*full_hist_len);
 	    hists_image[j*full_hist_len+k] += 1;
 	  } else if (v > vmax_full) {
 	    // If above range add to last bin
@@ -205,18 +200,33 @@ static PyObject *denoise(PyObject *self, PyObject *args, PyObject *kwargs)
   return scores_array;
 }
 
-
 static PyMethodDef DenoiseMethods[] = {
   {"calc_hists", (PyCFunction)calc_hists, METH_VARARGS|METH_KEYWORDS, calc_hists__doc__},
   {"denoise", (PyCFunction)denoise, METH_VARARGS|METH_KEYWORDS, denoise__doc__},
   {NULL, NULL, 0, NULL}
 };
 
+ static struct PyModuleDef denoisemodule = {
+        PyModuleDef_HEAD_INIT,
+        "denoise",              /* m_name */
+        "Denoise image stack.", /* m_doc */
+        -1,                     /* m_size */
+        DenoiseMethods,         /* m_methods */
+        NULL,                   /* m_reload */
+        NULL,                   /* m_traverse */
+        NULL,                   /* m_clear */
+        NULL,                   /* m_free */
+  };
 
-PyMODINIT_FUNC initdenoise(void)
+PyMODINIT_FUNC PyInit_initdenoise(void)
 {
   import_array();
-  PyObject *m = Py_InitModule3("denoise", DenoiseMethods, "Denoise image stack.");
-  if (m == NULL)
-    return;
+
+  PyObject *dmodule = PyModule_Create(&denoisemodule);
+
+  if (dmodule == NULL)
+      return NULL;
+
+  return dmodule;
 }
+

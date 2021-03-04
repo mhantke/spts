@@ -58,8 +58,6 @@ class DenoiserGauss2:
         fimage_G2 = np.fft.fftshift(np.fft.fft2(image)) * self._G2
         image_G2 = np.fft.ifft2(np.fft.ifftshift(fimage_G2))
         out = (abs(image_G1) - abs(image_G2))
-        #print out.max(), out.min()
-        #out = out/out.max() * 65000.
         return out
 
 class DenoiserHistogram:

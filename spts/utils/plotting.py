@@ -22,10 +22,10 @@ def get_run(timestamp=None):
     D["conf_filename"] = "/home/hantke/src/spts/detect_particles/spts.conf"
     #D["conf_filename"] = "%s/spts.conf" % D["root"]
     if not os.path.exists(D["conf_filename"]):
-        print "ERROR: Cannot find configuration file \"%s\"." % D["conf_filename"]
+        print("ERROR: Cannot find configuration file \"%s\"." % D["conf_filename"])
         return
     if not os.path.exists(D["data_filename"]):
-        print "ERROR: Cannot find data file \"%s\"." % D["data_filename"]
+        print("ERROR: Cannot find data file \"%s\"." % D["data_filename"])
         return
     D["conf"] = config.read_configfile(D["conf_filename"])    
     return D

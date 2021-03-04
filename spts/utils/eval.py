@@ -313,7 +313,7 @@ def read_data_single(ds_name, D, root_dir="/scratch/fhgfs/hantke/spts", only_sca
         
     if not os.path.isfile(D["filename"]):
         if verbose:
-            print "Skipping %s - file does not exist" % D["filename"]
+            print("Skipping %s - file does not exist" % D["filename"])
     else:
         # Read data
         with h5py.File(D["filename"], "r") as f:
@@ -382,13 +382,13 @@ def read_data_single(ds_name, D, root_dir="/scratch/fhgfs/hantke/spts", only_sca
                                 tmp_shape = f["%s/peak_thumbnails" % (t_analyse)][i,0].shape
                                 D["thumbnails"].append(np.asarray(f["%s/peak_thumbnails" % (t_analyse)][i, np.where(sel[i])[0], :, :]).reshape(sel[i].sum(), tmp_shape[0], tmp_shape[1]))
             if verbose:
-                print "Read %s" % D["filename"]
+                print("Read %s" % D["filename"])
         # Read config file        
         if os.path.isfile(D["conf_filename"]):
             D["conf"] = config.read_configfile(D["conf_filename"])
         else:
             if verbose:
-                print "Skipping %s - file does not exist" % D["conf_filename"]
+                print("Skipping %s - file does not exist" % D["conf_filename"])
     return D
 
 def mask_data(D, exclude_saturated_frames=False, verbose=True):
@@ -417,7 +417,7 @@ def mask_data(D, exclude_saturated_frames=False, verbose=True):
         else:
             c = np.ones(shape=v.shape, dtype='bool')
             if verbose:
-                print "WARNING: No masking of centered particles for %s" % k
+                print("WARNING: No masking of centered particles for %s" % k)
         D[k]["centered_particles"] = c
         c_fract = (c*v).sum()/float(v.sum())
         # CIRCULAR PARTICLES
@@ -435,7 +435,7 @@ def mask_data(D, exclude_saturated_frames=False, verbose=True):
         i_fract = (i*v).sum()/float(v.sum())
         # SOME OUTPUT
         if verbose:
-            print "%s: %.1f part. rate\t %i part.\t (%i %% not sat.; %i %% centered; %i %% circ.; %i %% isol.)" % (k, round(n_frame.mean(),1), v.sum(), 100.*n_fract, 100.*c_fract, 100.*r_fract, 100.*i_fract)
+            print("%s: %.1f part. rate\t %i part.\t (%i %% not sat.; %i %% centered; %i %% circ.; %i %% isol.)" % (k, round(n_frame.mean(),1), v.sum(), 100.*n_fract, 100.*c_fract, 100.*r_fract, 100.*i_fract))
     return D
 
 def read_thumbnails(D, k, index_mask, root_dir="/scratch/fhgfs/hantke/spts", Nmax=None):
@@ -447,7 +447,7 @@ def read_thumbnails(D, k, index_mask, root_dir="/scratch/fhgfs/hantke/spts", Nma
         ni = index_mask.shape[0]
         nj = index_mask.shape[1]
         if ni != f["/3_analyse/thumbnails"].shape[0] or nj != f["/3_analyse/thumbnails"].shape[1]:
-            print "ERROR: Shapes of index_mask (%s) and the h5dataset of thumbnails (%s) do not match!" % (str(index_mask.shape), str(f["/3_analyse/thumbnails"].shape))
+            print("ERROR: Shapes of index_mask (%s) and the h5dataset of thumbnails (%s) do not match!" % (str(index_mask.shape), str(f["/3_analyse/thumbnails"].shape)))
             return
         J,I = np.meshgrid(np.arange(nj), np.arange(ni))
         I = I[index_mask]
@@ -466,10 +466,10 @@ def fqls_to_mJ(fqls_us):
     tab_mJ   = np.array([53.60, 53.75, 53.25, 51.95, 49.98, 47.19, 44.30, 40.80, 37.30, 33.15, 29.38, 25.54,
                          21.58, 18.23, 15.18, 12.22,  9.65,  7.30,  5.37,  3.61,  2.33,  1.31,  0.58,  0.23], dtype=np.float64)
     if fqls_us < tab_fqls[0]:
-        print "WARNING: given FQLS=%f out of range (min.: %f)" % (fqls_us, tab_fqls[0])
+        print("WARNING: given FQLS=%f out of range (min.: %f)" % (fqls_us, tab_fqls[0]))
         return tab_mJ[0]
     elif fqls_us > tab_fqls[-1]:
-        print "WARNING: given FQLS=%f out of range (max.: %f)" % (fqls_us, tab_fqls[-1])
+        print("WARNING: given FQLS=%f out of range (max.: %f)" % (fqls_us, tab_fqls[-1]))
         return tab_mJ[-1]
     else:
         f = scipy.interpolate.interp1d(tab_fqls, tab_mJ)
@@ -654,9 +654,6 @@ def plot_positions(D, separate=False, ylim=None, xlim=None, ilim=None, Nslices=5
             H[si,:] = ydata
             Hfit[si,:] = nest
 
-            #ax4.plot(xdata, si*0.01+ydata, color='blue')
-            #ax4.plot(xdata, si*0.01+nest, color='black', ls='--')
-
         xc = np.array(results['x0'][results['success']]).mean()
         if recenter:
             xic = abs(xdata-xc).argmin() 
@@ -671,10 +668,7 @@ def plot_positions(D, separate=False, ylim=None, xlim=None, ilim=None, Nslices=5
             x1 = xmax - dx/2.
 
         extent = [x0-dx/2., x1+dx/2., ymin, ymax]
-        
-        #print intensity[p]**(1/6.)       
-        #print intensity[p]**(1/6.).min()
-        #print intensity[p]**(1/6.).max()
+
         ax1.hist(intensity[p]**(1/6.), bins=100)
         ax1.axvline(i0**(1/6.))
         ax1.axvline(i1**(1/6.))
@@ -817,7 +811,7 @@ def plot_thumbnails(D, sizes=None, variable="size_nm", save_png=False):
                     st = ""
                     sst = ""
                 else:
-                    print "ERROR: Argument variable=%s is invalid." % variable
+                    print("ERROR: Argument variable=%s is invalid." % variable)
                     return
     
             else:
@@ -897,7 +891,6 @@ def plot_hist(D, separate=False, projector=None, label="Scattering Intensity [ad
             H = np.histogram(data, bins=Nbins, range=(vmin, vmax))
             s = (H[1][:-1]+H[1][1:])/2.
             n = H[0]
-            #ax.plot(s, n, lw=1.8)
             ax.fill_between(s, n, np.zeros_like(n), lw=0)#1.8)
             if separate or (i+1) == len(keys) or accumulate:
                 ax.set_xlabel(label)
@@ -906,30 +899,21 @@ def plot_hist(D, separate=False, projector=None, label="Scattering Intensity [ad
 
             if fit == 1:
                 p_init = fit_p0
-                #p_init = None
                 p_result, nest = gaussian_fit(xdata=s,ydata=n,p_init=p_init)
-                #print p_result
                 ax.plot(s, nest)
-                #ng = double_gaussian(s, (A1, m1, s1), (A2, m2, s2))
-                #ax.plot(s, ng)
+    
                 ((A1, m1, s1)) = p_result
                 ax.text(m1*1.1, A1*1.1, "%.3f (sigma = %.3f)" % (round(m1,3), round(s1,3)) , ha="left")
-                ax.legend(["measured", "fit"])
-                #print p_result                
+                ax.legend(["measured", "fit"])           
             
             if fit == 2:
                 p_init = fit_p0
-                #p_init = None
                 p_result, nest = double_gaussian_fit(xdata=s,ydata=n,p_init=p_init)
-                #print p_result
                 ax.plot(s, nest)
-                #ng = double_gaussian(s, (A1, m1, s1), (A2, m2, s2))
-                #ax.plot(s, ng)
                 ((A1, m1, s1), (A2, m2, s2)) = p_result
                 ax.text(m1*1.1, A1*1.1, "%.3f (sigma = %.3f)" % (round(m1,3), round(s1,3)) , ha="left")
                 ax.text(m2*1.1, A2*1.1, "%.3f (sigma = %.3f)" % (round(m2,3), round(s2,3)) , ha="left")
                 ax.legend(["measured", "fit"])
-                #print p_result
 
             if axvlines is not None:
                 ax.set_ylim((0, 1.2*n.max()))
@@ -1086,7 +1070,7 @@ def hist_gauss_fit(x, xmin, xmax, do_plot=False, ax=None, bootstrap=False, n_boo
         bins += 1
         H, xedges = np.histogram(x, range=(xmin, xmax), bins=bins)           
         if bins > bins_max:
-            print "Fit failed."
+            print("Fit failed.")
             break
     while not success:
         H, xedges = np.histogram(x, range=(xmin, xmax), bins=bins)           
@@ -1104,10 +1088,9 @@ def hist_gauss_fit(x, xmin, xmax, do_plot=False, ax=None, bootstrap=False, n_boo
         else:
             bins *= 1+bins_step
             bins = int(round(bins))
-        #if pix_to_um(fwhm) > 600:
-        #    continue
+
         if bins > bins_max:
-            print "Fit failed."
+            print("Fit failed.")
             break
     if do_plot:
         if ax is None:
@@ -1139,7 +1122,7 @@ def calc_all_vecs(x, y, rmax=40):
     
     s = (x > 0) * (y > 0)
     if not s.any():
-        print "WARNING: Not a single point is valid."
+        print("WARNING: Not a single point is valid.")
         return dx, dy, di1, di2
 
     i = np.arange(x.shape[1])
@@ -1171,7 +1154,7 @@ def calc_all_vecs(x, y, rmax=40):
         di2[-1] = np.asarray(di2[-1])
     selfrac = float(napp) / float(s.sum())
     if selfrac < 0.3:
-        print "WARNING: Selection fraction: %.2f%%" % (100*selfrac)
+        print("WARNING: Selection fraction: %.2f%%" % (100*selfrac))
     return dx, dy, di1, di2
 
 def calc_mean_vec(dx, dy, rmax=40, ds=1, dxmax=None, dx0_guess=None, dy0_guess=None):
@@ -1233,7 +1216,6 @@ def identify_pairs(dx, dy, di1, di2, dx0, dy0, dI=None, length_err_max=0.1, angl
             i1_pair = di1[i_frame][i_pair]
             i2_pair = di2[i_frame][i_pair]
             if (i1_pair not in di1_new[-1]) and (i1_pair not in di2_new[-1]) and (i2_pair not in di1_new[-1]) and (i2_pair not in di2_new[-1]):
-                #print i1_pair, i2_pair
                 di1_new[-1].append(i1_pair)
                 di2_new[-1].append(i2_pair)
             else:
@@ -1243,7 +1225,7 @@ def identify_pairs(dx, dy, di1, di2, dx0, dy0, dI=None, length_err_max=0.1, angl
         nsuc += len(di1_new[-1])
         ntot += nsel
     if verbose:
-        print "success %i/%i" % (nsuc, ntot)
+        print("success %i/%i" % (nsuc, ntot))
     return di1_new, di2_new
 
 def filter_pairs(data, di1, di2, flat_output=False):

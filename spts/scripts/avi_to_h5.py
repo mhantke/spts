@@ -7,18 +7,18 @@ import argparse
 def avi_to_frames(filename):
     d = filename[:-len(".avi")] + "_frames"
     if os.path.exists(d):
-        print "Frames already converted to PNG ..."
+        print("Frames already converted to PNG ...")
         return d
-    print "Prepare output directory ..."
+    print("Prepare output directory ...")
     cmd = "mkdir %s" % d
-    print cmd
+    print(cmd)
     os.system(cmd)
     cmd = "rm %s/*" % d
-    print cmd
+    print(cmd)
     os.system(cmd)
-    print "Convert AVI to PNGs ..."
+    print("Convert AVI to PNGs ...")
     cmd = ("ffmpeg -i %s %s/" % (filename,d) + "frame%09d.png")
-    print cmd
+    print(cmd)
     os.system(cmd)
     return d
 
@@ -54,7 +54,7 @@ def frames_to_h5(directory, factor, N_max=250):
     filename_h5 = directory + "/frames.cxi"
     init = False
     N = len(filenames)
-    print "Convert PNGs to H5 ..."
+    print("Convert PNGs to H5 ...")
     with h5py.File(filename_h5,"w") as f:
         f.create_group("/entry_1")
         # Raw data
@@ -64,7 +64,7 @@ def frames_to_h5(directory, factor, N_max=250):
         ds_raw_max = _new_dataset(f, grp_name + "/max", np.int16, tuple(), N)
         ds_raw_median = _new_dataset(f, grp_name + "/median", np.float64, tuple(), N)
         for i,filename in enumerate(filenames):
-            print "(%i/%i) Raw frame to H5" % (i+1,N)
+            print("(%i/%i) Raw frame to H5" % (i+1,N))
             img = imread(filename)
             # RGB to Grayscale
             img = np.array(np.round(255*img.sum(axis=2)/3),dtype=np.int16)
@@ -75,8 +75,7 @@ def frames_to_h5(directory, factor, N_max=250):
             ds_raw_sum[i] = img.sum()
             ds_raw_min[i] = img.min()
             ds_raw_max[i] = img.max()
-            ds_raw_median[i] = np.median(img)
-        #print "Create median subtracted frames ..."    
+            ds_raw_median[i] = np.median(img)  
         # Background and fluctuation
         ds_std = _new_dataset(f, grp_name + "/std", np.float64, img.shape, None)
         ds_bg = _new_dataset(f, grp_name + "/bg", np.float64, img.shape, None)
@@ -97,7 +96,7 @@ def frames_to_h5(directory, factor, N_max=250):
         ds_corr1_median = _new_dataset(f, grp_name + "/median", np.float64, tuple(), N)
         ds_corr1 = _new_dataset(f, grp_name + "/data", np.float64, img.shape, N)
         for i in range(N):
-            print "(%i/%i) Corrected (1) frame to H5" % (i+1,N)
+            print("(%i/%i) Corrected (1) frame to H5" % (i+1,N))
             temp = ds_raw[i,:,:] - bg[:,:]
             img1 = temp - np.median(temp)
             ds_corr1[i,:,:] = img1[:,:]
@@ -114,7 +113,7 @@ def frames_to_h5(directory, factor, N_max=250):
         ds_corr2_median = _new_dataset(f, grp_name + "/median", np.float64, tuple(), N)
         ds_corr2 = _new_dataset(f, grp_name + "/data", np.float64, img.shape, N)
         for i in range(N):
-            print "(%i/%i) Corrected (2) frame to H5" % (i+1,N)
+            print("(%i/%i) Corrected (2) frame to H5" % (i+1,N))
             temp = ds_raw[i,:,:] - bg[:,:]
             row_medians = np.median(temp, axis=1)
             img2 = temp# - np.array([row_medians]).repeat(img.shape[1],axis=0).reshape((img.shape[0],img.shape[1]))
@@ -144,7 +143,7 @@ def main():
     else:
         filenames = [args.filename]
     for i,filename in enumerate(filenames):
-        print ("(%i/%i)" % (i+1,len(filenames))), filename
+        print(("(%i/%i)" % (i+1,len(filenames))), filename)
         avi_to_h5(filename, factor=args.factor, keep_pngs=args.keep_pngs)
 
 if __name__ == "__main__":

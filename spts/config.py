@@ -1,4 +1,4 @@
-import os, numpy, ConfigParser
+import os, numpy, configparser
 
 import logging
 logger = logging.getLogger(__name__)
@@ -9,7 +9,7 @@ def read_configfile(configfile):
     """
     Read configuration file to dictionary
     """
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     with open(configfile,"r") as f:
         config.readfp(f)
         confDict = {}

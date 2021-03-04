@@ -201,9 +201,7 @@ def iterate_particle_motion(D, d_p, v_p_0=10., z_p_0= 0., z_p_max=1E-3, g=0.002,
         tmp_dv_p = dv_p_c(v_p[-1][k-1], z_p[-1][k-1], D, d_p)
         tmp_ddv_p = ddv_p_c(v_p[-1][k-1], z_p[-1][k-1], D, d_p)
         dt = 2 * g * abs(tmp_dv_p) / abs(tmp_ddv_p)
-        #print dt
-        #dt = min([dt, (1+ddt_max)*dt])
-        #dt = max([dt, dt_min])
+
         a_p[-1][k] = a_p[-1][k-1] + dt * tmp_ddv_p
         v_p[-1][k] = v_p[-1][k-1] + dt * tmp_dv_p + 0.5 * dt**2 * tmp_ddv_p
         z_p[-1][k] = z_p[-1][k-1] + dt * v_p[-1][k]

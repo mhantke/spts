@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/local/bin/python3
 import numpy as np
 import itertools
 import scipy.ndimage.measurements

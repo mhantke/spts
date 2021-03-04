@@ -1,6 +1,5 @@
 import numpy as np
 
-
 class DummyWorker:
 
     def __init__(self, conf):

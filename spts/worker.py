@@ -39,7 +39,7 @@ class Worker:
                                                                vmin_full=self.conf["denoise"].get("vmin_full", -50),
                                                                vmax_full=self.conf["denoise"].get("vmax_full", 255))
             else:
-                print "ERROR: Method %s is not implemented" % method
+                print("ERROR: Method %s is not implemented" % method)
                 return
             self.denoiser.denoise_dict = dict(self.conf["denoise"])
 
@@ -51,7 +51,7 @@ class Worker:
             
     def get_work(self):
         if self.pipeline_mode:
-            print "ERROR: Do not use function get_work in pipeline mode!"
+            print("ERROR: Do not use function get_work in pipeline mode!")
             return
 
         if self.i is None:

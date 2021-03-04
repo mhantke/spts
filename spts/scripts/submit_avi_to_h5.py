@@ -8,5 +8,5 @@ for f in [f for f in os.listdir(curdir) if f.endswith(".avi")]:
     cmd = "sbatch --output=%s/%s avi_to_h5.sh %s/%s" % (curdir, fout, curdir, f)
     for arg in sys.argv[1:]:
         cmd += " " + arg
-    print cmd
+    print(cmd)
     os.system(cmd)

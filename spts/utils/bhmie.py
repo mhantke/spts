@@ -28,7 +28,7 @@ def bhmie(x, refrel, angles):
     tau=zeros(nang,dtype=complex128)
 
     if (nang > 1000):
-        print ('error: nang > mxnang=1000 in bhmie')
+        print('error: nang > mxnang=1000 in bhmie')
         return
 
     dx = x
@@ -56,7 +56,7 @@ def bhmie(x, refrel, angles):
     nstop = int(xstop)
 
     if (nmx > nmxx):
-        print ( "error: nmx > nmxx=%f for |m|x=%f" % ( nmxx, ymod) )
+        print("error: nmx > nmxx=%f for |m|x=%f" % ( nmxx, ymod))
         return
 
     amu=cos(angles)

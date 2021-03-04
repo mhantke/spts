@@ -9,12 +9,12 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     with h5py.File(args.filename, "r") as f:
-        print f.keys()
+        print(f.keys())
         ds = f[args.dataset]
         N = ds.shape[0]
         sum = numpy.zeros(shape=(ds.shape[1],ds.shape[2]))
         for i in range(N):
-            print "(%i/%i)" % (i+1,N)
+            print("(%i/%i)" % (i+1,N))
             sum += ds[i,:,:]
 
     with h5py.File("sum.h5", "w") as f:

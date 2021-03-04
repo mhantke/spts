@@ -212,11 +212,26 @@ static PyMethodDef DenoiseMethods[] = {
   {NULL, NULL, 0, NULL}
 };
 
+ static struct PyModuleDef denoisemodule = {
+        PyModuleDef_HEAD_INIT,
+        "denoise",              /* m_name */
+        "Denoise image stack.", /* m_doc */
+        -1,                     /* m_size */
+        DenoiseMethods,         /* m_methods */
+        NULL,                   /* m_reload */
+        NULL,                   /* m_traverse */
+        NULL,                   /* m_clear */
+        NULL,                   /* m_free */
+  };
 
-PyMODINIT_FUNC initdenoise(void)
+PyMODINIT_FUNC PyInit_initdenoise(void)
 {
   import_array();
-  PyObject *m = Py_InitModule3("denoise", DenoiseMethods, "Denoise image stack.");
-  if (m == NULL)
-    return;
+
+  PyObject *dmodule = PyModule_Create(&denoisemodule);
+
+  if (dmodule == NULL)
+      return NULL;
+
+  return dmodule;
 }

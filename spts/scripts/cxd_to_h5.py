@@ -6,11 +6,11 @@ from struct import unpack
 import numpy as np
 
 import sys
-print sys.path
+print(sys.path)
 
 import h5writer
 import spts
-print "try"
+print("try")
 import spts.camera
 from spts.camera import CXDReader
 
@@ -19,7 +19,7 @@ def cxd_to_h5(filename_cxd, filename_bg_cxd, filename_cxi, Nbg_max):
     # Initialise reader(s)
 
     # Data
-    print "Opening %s" % filename_cxd
+    print("Opening %s" % filename_cxd)
     R = CXDReader(filename_cxd)
 
     # Background
@@ -28,19 +28,19 @@ def cxd_to_h5(filename_cxd, filename_bg_cxd, filename_cxi, Nbg_max):
         if filename_bg_cxd == filename_cxd:
             Rbg = R
         else:
-            print "Opening %s" % filename_bg_cxd
+            print("Opening %s" % filename_bg_cxd)
             Rbg = CXDReader(filename_bg_cxd)
         # Collect background stack
-        print "Collecting background frames..." 
+        print("Collecting background frames...")
         Nbg = min([Nbg_max, Rbg.get_number_of_frames()])
         for i in range(Nbg):
             frame = Rbg.get_frame(i)
             if i == 0:
                 bg_stack = np.zeros(shape=(Nbg, frame.shape[0], frame.shape[1]), dtype=frame.dtype)
             bg_stack[i,:,:] = frame[:,:]
-            print '(%d/%d) filling buffer for background estimation ...' % (i+1, Nbg)
+            print('(%d/%d) filling buffer for background estimation ...' % (i+1, Nbg))
         # Calculate median from background stack => background image    
-        print "Calculating background estimate by median of buffer"
+        print("Calculating background estimate by median of buffer")
         bg = np.median(bg_stack, axis=0)
     else:
         bg = None
@@ -58,7 +58,7 @@ def cxd_to_h5(filename_cxd, filename_bg_cxd, filename_cxi, Nbg_max):
     N  = R.get_number_of_frames()
     for i in range(N):
 
-        print '(%d/%d) Writing frame ...' % (i+1, N)
+        print('(%d/%d) Writing frame ...' % (i+1, N))
 
         frame = R.get_frame(i)
         image_raw = frame
@@ -93,7 +93,7 @@ def cxd_to_h5(filename_cxd, filename_bg_cxd, filename_cxi, Nbg_max):
             integratedsq_image += np.asarray(image_bgcor, dtype='f')**2
         
     # Write integrated images
-    print 'Writing integrated images...'
+    print('Writing integrated images...')
     out = {"entry_1": {"data_1": {}, "image_1": {}}}
     if integrated_raw is not None:
         out["entry_1"]["data_1"]["data_mean"] = integrated_raw / float(N)
@@ -105,14 +105,14 @@ def cxd_to_h5(filename_cxd, filename_bg_cxd, filename_cxi, Nbg_max):
         out["entry_1"]["image_1"]["datasq_mean"] = integratedsq_image / float(N)
     W.write_solo(out)
 
-    print "Closing files..."
+    print("Closing files...")
     # Close CXI file    
     W.close()
     # Close readers
     R.close()
     if Rbg is not None and not Rbg.is_closed():
         Rbg.close()
-    print "Clean exit."
+    print("Clean exit.")
 
 if __name__ == "__main__":
 
@@ -136,7 +136,7 @@ if __name__ == "__main__":
     else: 
         f_bg = f[:-4] + "_bg.cxd"
         if not os.path.isfile(f_bg):
-            print "WARNING: File with background frames not found in location %s.\n\tFalling back to determining background from the real data frames." % f_bg
+            print("WARNING: File with background frames not found in location %s.\n\tFalling back to determining background from the real data frames." % f_bg)
             f_bg = f
 
     ### If the output file name is not specified the original file name is used and .cxi is appended to it!!!
@@ -148,6 +148,6 @@ if __name__ == "__main__":
     ### Checks whether given input file is in the correct .cxd format!!!
     ### Call cxd_to_h5(); with f = filename_cxd, f_bg = filename_bg_cxd, f_out = filename_cxi, and arg.bg_frames_max = Nbg_max!!!
     if not args.filename.endswith(".cxd"):
-        print "ERROR: Given filename %s does not end with \".cxd\. Wrong format!" % args.filename
+        print("ERROR: Given filename %s does not end with \".cxd\. Wrong format!" % args.filename)
     else:
         cxd_to_h5(f, f_bg, f_out, args.bg_frames_max)

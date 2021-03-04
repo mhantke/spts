@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import os
 import sys
 this_dir = os.path.dirname(os.path.realpath(__file__))
@@ -12,7 +10,6 @@ logger = logging.getLogger("MSI_GUI")
 import numpy as np
 from matplotlib import pyplot as pypl
 
-
 from PyQt5 import QtCore, QtGui, uic
 import pyqtgraph as pg
 
@@ -20,7 +17,7 @@ from expiringdict import ExpiringDict
 
 import ui
 
-# MSI modules
+# MSI modules 
 import worker
 
 from spts_conf import Conf

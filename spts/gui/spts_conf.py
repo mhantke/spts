@@ -8,7 +8,6 @@ import copy
 # SPTS modules
 import config
 
-
 from PyQt5 import QtCore, QtGui, uic
 
 import logging
@@ -51,15 +50,12 @@ class Conf(dict):
         
     def any_unsaved_changes(self):
         if self._saved is None:
-            #print "self._saved is None"
             return True
         for sec_name, sec_dict in self._saved.items():
             if sec_name not in self:
-                #print "sec_name=%s is not in self" % sec_name
                 return True
             for opt_name, opt_value in sec_dict.items():
                 if opt_name not in self[sec_name] or self[sec_name][opt_name] != opt_value:
-                    #print "sec_name=%s, opt_name=%s: %s != %s" % (sec_name, opt_name, self[sec_name][opt_name], opt_value)
                     return True
         return False        
         
